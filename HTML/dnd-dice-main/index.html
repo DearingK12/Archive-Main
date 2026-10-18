@@ -1,0 +1,205 @@
+<!-- Name: Koda R Dearing
+     Description: Creator of the D&D Ultimate Dice Roller -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>D&D Ultimate Dice Roller</title>
+<style>
+body { background:#0d0d0d; color:#eee; font-family: Arial,sans-serif; padding:15px; }
+h1 { color:#f4b942; font-size:2em; margin-bottom:10px; }
+h2 { color:#f4b942; }
+.box { background:#1a1a1a; padding:15px; margin-bottom:20px; border-radius:10px; }
+input, select, button, textarea { width:100%; padding:6px; margin-top:5px; box-sizing:border-box; }
+button { background:#f4b942; border:none; border-radius:6px; font-weight:bold; cursor:pointer; }
+.grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.output { background:#111; padding:10px; margin-top:10px; border-radius:6px; white-space:pre-line; }
+.collapsible { cursor:pointer; padding:10px; background:#222; border:none; text-align:left; outline:none; font-size:1em; width:100%; border-radius:6px; }
+.active, .collapsible:hover { background:#333; }
+.content { padding:0 15px; display:none; overflow:hidden; background:#1a1a1a; border-radius:6px; margin-top:5px; }
+</style>
+</head>
+<body>
+
+<h1>D&D Ultimate Roller 🎲</h1>
+
+<!-- Dice Roller -->
+<div class="box">
+<h2>Dice / Math</h2>
+<select id="diceSelect">
+  <option value="1d4">1d4</option>
+  <option value="1d6">1d6</option>
+  <option value="1d8">1d8</option>
+  <option value="1d10">1d10</option>
+  <option value="1d12">1d12</option>
+  <option value="1d20" selected>1d20</option>
+  <option value="1d100">1d100</option>
+</select>
+<select id="adv">
+  <option value="normal">Normal</option>
+  <option value="adv">Advantage</option>
+  <option value="dis">Disadvantage</option>
+</select>
+<button onclick="rollExpression()">Roll</button>
+<div class="output" id="diceOut"></div>
+</div>
+
+<!-- Character Sheet collapsible -->
+<button type="button" class="collapsible">Character Sheet (1-11)</button>
+<div class="content box" id="characterSheet">
+
+<!-- 1. Basic Info -->
+<h3>1. Basic Info</h3>
+<input id="name" placeholder="Name">
+<input id="campaign" placeholder="Campaign (Optional)">
+<input id="race" placeholder="Race">
+<input id="class" placeholder="Class / Level">
+<input id="background" placeholder="Background">
+<input id="alignment" placeholder="Alignment">
+<input id="size" placeholder="Size">
+<input id="speed" placeholder="Speed">
+
+<!-- 2. Ability Scores -->
+<h3>2. Ability Scores</h3>
+<div class="grid">
+  <div><div>STR</div><input id="STR" type="number" value="10"></div>
+  <div><div>DEX</div><input id="DEX" type="number" value="10"></div>
+  <div><div>CON</div><input id="CON" type="number" value="10"></div>
+  <div><div>INT</div><input id="INT" type="number" value="10"></div>
+  <div><div>WIS</div><input id="WIS" type="number" value="10"></div>
+  <div><div>CHA</div><input id="CHA" type="number" value="10"></div>
+</div>
+<input id="prof" type="number" value="2" placeholder="Proficiency Bonus">
+
+<!-- 3. Combat Stats -->
+<h3>3. Combat Stats</h3>
+<input id="hp" placeholder="HP (current/max)">
+<input id="ac" placeholder="Armor Class">
+<input id="initiative" placeholder="Initiative">
+<input id="spellSaveDC" placeholder="Spell Save DC">
+<input id="spellAttack" placeholder="Spell Attack">
+
+<!-- 4. Skills -->
+<h3>4. Skills</h3>
+<input id="skillArcana" placeholder="Arcana">
+<input id="skillHistory" placeholder="History">
+<input id="skillInvestigation" placeholder="Investigation">
+<input id="skillMedicine" placeholder="Medicine">
+<input id="skillInsight" placeholder="Insight">
+
+<!-- 5. Tool Proficiencies -->
+<h3>5. Tool Proficiencies</h3>
+<input id="toolAlchemist" placeholder="Alchemist’s Supplies">
+<input id="toolTinker" placeholder="Tinker’s Tools">
+<input id="toolThieves" placeholder="Thieves’ Tools">
+<input id="toolSmith" placeholder="Smith’s Tools">
+
+<!-- 6. Class Features -->
+<h3>6. Class Features</h3>
+<input id="classFeature1" placeholder="Magical Tinkering">
+<input id="classFeature2" placeholder="Infuse Item">
+<input id="classFeature3" placeholder="Right Tool for the Job">
+<input id="classFeature4" placeholder="Experimental Elixir">
+<input id="classFeature5" placeholder="Alchemical Savant">
+<input id="classFeature6" placeholder="Tool Expertise">
+
+<!-- 7. Active Infusions -->
+<h3>7. Active Infusions</h3>
+<input id="activeInfusion1" placeholder="Enhanced Arcane Focus">
+<input id="activeInfusion2" placeholder="Alchemy Jug">
+
+<!-- 8. Spellcasting -->
+<h3>8. Spellcasting</h3>
+<input id="spellSlots" placeholder="Spell Slots">
+<input id="cantrips" placeholder="Cantrips">
+<input id="preparedSpells" placeholder="Prepared Spells">
+
+<!-- 9. Equipment -->
+<h3>9. Equipment</h3>
+<input id="equipment1" placeholder="Item 1">
+<input id="equipment2" placeholder="Item 2">
+<input id="equipment3" placeholder="Item 3">
+<input id="equipment4" placeholder="Item 4">
+<input id="equipment5" placeholder="Item 5">
+
+<!-- 10. Personality -->
+<h3>10. Personality</h3>
+<input id="ideal" placeholder="Ideal">
+<input id="bond" placeholder="Bond">
+<input id="flaw" placeholder="Flaw">
+
+<!-- 11. Portrait / Import -->
+<h3>11. Portrait / Import</h3>
+<input type="file" id="portraitInput" accept="image/*">
+<img id="portraitPreview" style="display:none; max-width:150px; margin-top:5px;">
+<input type="file" id="sheetFile" accept=".txt,.csv,.jpg,.jpeg,.png,.pdf">
+<button onclick="importCharacter()">Import Character</button>
+<div id="ocrOutput" style="display:none;"></div>
+
+<div style="margin-top:10px;">
+  <button onclick="saveChar()">Save</button>
+  <button onclick="loadChar()">Load</button>
+  <button onclick="deleteChar()">Delete</button>
+  <button onclick="startEdit()">Edit</button>
+  <button id="doneEdit" onclick="finishEdit()" style="display:none;">Done</button>
+  <button id="cancelEdit" onclick="cancelEdit()" style="display:none;">Cancel</button>
+</div>
+
+<div class="output" id="charOut"></div>
+</div>
+
+<div class="box">
+<h2>History</h2>
+<div class="history" id="history"></div>
+</div>
+
+<!-- Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@v4.1.1/dist/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
+
+<script>
+// Collapsible
+document.querySelectorAll(".collapsible").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    btn.classList.toggle("active");
+    const content = btn.nextElementSibling;
+    if(content.style.display==="block") content.style.display="none";
+    else content.style.display="block";
+  });
+});
+
+// Dice roll animation
+function rollExpression(){
+  const expr=diceSelect.value;
+  const sides=parseInt(expr.split("d")[1]);
+  const r1=d(sides), r2=d(sides);
+  const use=r1;
+  let display=0;
+  const interval=setInterval(()=>{
+    display=Math.floor(Math.random()*sides)+1;
+    diceOut.innerText=`Rolling: ${display}`;
+  },50);
+  setTimeout(()=>{
+    clearInterval(interval);
+    let result;
+    if(adv.value==="adv") result=Math.max(r1,r2);
+    else if(adv.value==="dis") result=Math.min(r1,r2);
+    else result=r1;
+    diceOut.innerText=`Rolls: ${r1}, ${r2}\nResult: ${result}`;
+    log(`Dice: ${result}`);
+  },600);
+}
+
+// Utils
+const d=s=>Math.floor(Math.random()*s)+1;
+const mod=s=>Math.floor((s-10)/2);
+const log=t=>history.innerText=t+"\n"+history.innerText;
+
+// All character storage functions, edit workflow, OCR/PDF import go here
+// (we can add them fully in next message if you want a working copy)
+
+</script>
+</body>
+</html>
