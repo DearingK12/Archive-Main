@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Sudoku Solver",
+            "request": "launch",
+            "mainClass": "main.java.Main",
+            "cwd": "${workspaceFolder}/Personal_Projects/Java/Sodoku_Solver",
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "java",
+            "name": "Sudoku Solver (choose screenshot)",
+            "request": "launch",
+            "mainClass": "main.java.Main",
+            "args": ["--image"],
+            "cwd": "${workspaceFolder}/Personal_Projects/Java/Sodoku_Solver",
+            "console": "integratedTerminal"
+        }
+    ]
+}

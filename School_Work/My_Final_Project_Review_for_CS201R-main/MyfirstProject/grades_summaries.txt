@@ -1,0 +1,38 @@
+--- Grade Summary ---
+Timestamp: 2025-12-15 16:32:59
+Final weighted percentage: 85.00%
+Passing threshold: 60.00% -> PASS
+Breakdown:
+- Homework: 45.00/50.00 => 90.00% (weight 50.00%)
+- Exam: 80.00/100.00 => 80.00% (weight 50.00%)
+
+--- Grade Summary ---
+Timestamp: 2025-12-15 16:36:41
+Student: Alice
+Final weighted percentage: 85.00%
+Passing threshold: 60.00% -> PASS
+Breakdown:
+- Homework: 45.00/50.00 => 90.00% (weight 50.00%)
+- Exam: 80.00/100.00 => 80.00% (weight 50.00%)
+
+--- Grade Summary ---
+Timestamp: 2025-12-15 16:36:49
+Student: Alice
+Final weighted percentage: 85.00%
+Passing threshold: 60.00% -> PASS
+Breakdown:
+- Homework: 45.00/50.00 => 90.00% (weight 50.00%)
+- Exam: 80.00/100.00 => 80.00% (weight 50.00%)
+
+--- Grade Summary ---
+Timestamp: 2025-12-15 16:51:36
+Student: Koda R Dearing
+Student: Koda R Dearing
+Final weighted percentage: 91.36%
+Passing threshold: 70.00% -> PASS
+Breakdown:
+- Exam 1: 100.00/110.00 => 90.91% (weight 15.00%)
+- Programming assignment 1: 150.00/150.00 => 100.00% (weight 30.00%)
+- Exam 2: 60.00/100.00 => 60.00% (weight 15.00%)
+- Programming assignment 2: 180.00/170.00 => 105.88% (weight 15.00%)
+
