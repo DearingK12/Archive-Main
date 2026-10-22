@@ -35,7 +35,7 @@
     button, select { font: inherit; }
     button { color: inherit; }
     .topbar {
-      height: 66px;
+      min-height: 66px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -44,6 +44,18 @@
       background: #20242a;
       border-bottom: 1px solid #30353d;
     }
+    .topbar-actions { display: flex; align-items: center; gap: 8px; }
+    .topbar-actions button {
+      padding: 8px 11px;
+      border: 1px solid #424852;
+      border-radius: 5px;
+      background: #2b3038;
+      color: #e5e7eb;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    .topbar-actions button:hover { background: #373e47; }
     .brand { display: flex; align-items: center; gap: 11px; font-weight: 750; letter-spacing: -.3px; }
     .brand-mark { color: var(--green); font-size: 29px; line-height: 1; }
     .brand small { color: var(--muted); font-size: 11px; font-weight: 550; letter-spacing: .7px; text-transform: uppercase; }
@@ -86,6 +98,17 @@
     .player-copy strong { font-size: 13px; }
     .player-copy span { color: var(--muted); font-size: 11px; }
     .player-rating { margin-left: auto; color: #aeb5bd; font-size: 12px; }
+    .clock {
+      min-width: 76px;
+      padding: 5px 9px;
+      border-radius: 5px;
+      background: #30353d;
+      color: #f4f4f5;
+      font: 700 18px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+      text-align: center;
+    }
+    .clock.active { background: #e8e9eb; color: #22262d; }
+    .clock.low { background: #b83d3d; color: #fff; }
     .board {
       display: grid;
       width: var(--board-size);
@@ -290,11 +313,74 @@
     .promotion-options { display: flex; gap: 8px; }
     .promotion-options button { width: 56px; height: 58px; border: 0; border-radius: 5px; background: var(--panel-raised); font-size: 38px; cursor: pointer; }
     .promotion-options button:hover { background: #3c434d; }
+    #profile-form input { min-width: 0; width: 100%; padding: 8px 10px; border: 1px solid #424852; border-radius: 5px; background: #2b3038; color: var(--text); }
+    #profile-form .button.primary { grid-column: auto; }
+    .profile-summary { grid-column: 1 / -1; color: var(--muted); font-size: 11px; }
+    .recent-games { display: grid; gap: 6px; margin-top: 14px; }
+    .recent-game { display: flex; justify-content: space-between; gap: 10px; padding: 8px 10px; border-radius: 5px; background: #ffffff08; color: #d1d5db; font-size: 11px; }
+    .recent-game strong { color: var(--text); text-transform: uppercase; }
+    .clock-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding: 0 18px 14px; }
+    .clock-controls .control-label { grid-column: 1 / -1; }
+    .record-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 11px 18px; border-top: 1px solid var(--line); }
+    .record-stat { padding: 7px 4px; border-radius: 5px; background: #ffffff08; text-align: center; }
+    .record-stat strong { display: block; font-size: 16px; }
+    .record-stat span { color: var(--muted); font-size: 10px; }
+    .training-banner { display: none; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); background: #2a3037; }
+    .training-banner.active { display: flex; }
+    .training-banner strong { font-size: 12px; }
+    .training-banner span { color: var(--muted); font-size: 11px; }
+    .modal-backdrop {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: #000b;
+    }
+    .modal-backdrop.open { display: grid; }
+    .feature-modal { width: min(560px, 100%); max-height: min(780px, 90vh); overflow: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); box-shadow: 0 18px 70px #0008; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 17px 20px; border-bottom: 1px solid var(--line); }
+    .modal-header h2 { margin: 0; font-size: 19px; }
+    .modal-close { width: 34px; height: 34px; border: 0; border-radius: 5px; background: var(--panel-raised); font-size: 20px; cursor: pointer; }
+    .modal-content { padding: 18px 20px; }
+    .lesson-progress { margin-bottom: 15px; color: var(--muted); font-size: 12px; }
+    .lesson-card { padding: 15px; border: 1px solid var(--line); border-radius: 7px; background: #ffffff06; }
+    .lesson-card h3 { margin: 0 0 7px; }
+    .lesson-card p { margin: 0 0 12px; color: #c1c6cd; font-size: 13px; }
+    .lesson-question { margin: 15px 0 8px; font-weight: 700; font-size: 13px; }
+    .answer-list { display: grid; gap: 7px; }
+    .answer-option { padding: 9px 11px; border: 1px solid #454b55; border-radius: 5px; background: var(--panel-raised); text-align: left; cursor: pointer; }
+    .answer-option:hover { border-color: var(--green); }
+    .answer-option.correct { border-color: var(--green); background: #81b64c24; }
+    .answer-option.incorrect { border-color: #d26a63; background: #d26a6324; }
+    .modal-actions { display: flex; justify-content: space-between; gap: 8px; margin-top: 14px; }
+    .puzzle-select { display: grid; gap: 11px; }
+    .puzzle-select p { margin: 0; color: #c1c6cd; font-size: 13px; }
+    .puzzle-select select { width: 100%; }
+    .puzzle-status { min-height: 21px; margin-top: 8px; color: #c1c6cd; font-size: 12px; }
+    .review-progress { margin-bottom: 12px; color: var(--muted); font-size: 12px; }
+    .review-summary { margin-bottom: 14px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 7px; background: #ffffff06; color: #d7dbe0; font-size: 13px; }
+    .review-list { display: grid; gap: 8px; }
+    .review-move { padding: 11px 12px; border: 1px solid var(--line); border-left: 4px solid #77808b; border-radius: 6px; background: #ffffff06; }
+    .review-move.excellent { border-left-color: #81b64c; }
+    .review-move.good { border-left-color: #80ad72; }
+    .review-move.inaccuracy { border-left-color: #dfb34d; }
+    .review-move.mistake { border-left-color: #e68a46; }
+    .review-move.blunder { border-left-color: #d65d56; }
+    .review-move-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+    .review-move-head strong { font: 700 13px ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .review-grade { color: #c3cad2; font-size: 11px; font-weight: 700; }
+    .review-move p { margin: 3px 0 0; color: #b9c0c8; font-size: 12px; }
+    .review-best { color: #e2e6ea !important; }
 
     @media (max-width: 900px) {
       :root { --board-size: min(92vw, 62vh, 600px); }
-      .topbar { height: 58px; padding: 0 16px; }
+      .topbar { height: auto; min-height: 58px; padding: 8px 16px; }
       .topbar-note { display: none; }
+      .topbar { flex-wrap: wrap; row-gap: 8px; }
+      .topbar-actions { gap: 5px; }
+      .topbar-actions button { padding: 7px; font-size: 11px; }
       main { padding: 22px 12px 32px; }
       .heading { margin: 0 auto 16px; max-width: var(--board-size); }
       .game-layout { grid-template-columns: minmax(0, var(--board-size)); gap: 13px; }
@@ -308,6 +394,11 @@
   <header class="topbar">
     <div class="brand"><span class="brand-mark" aria-hidden="true">♞</span><span>Chessboard<br><small>Play. Learn. Improve.</small></span></div>
     <span class="topbar-note">Your personal chess practice board</span>
+    <nav class="topbar-actions" aria-label="Practice options">
+      <button id="open-profile" type="button">Player</button>
+      <button id="open-lessons" type="button">Lessons</button>
+      <button id="open-puzzles" type="button">Puzzles</button>
+    </nav>
   </header>
   <main>
     <div class="heading">
@@ -319,19 +410,22 @@
         <div class="player-bar">
           <div class="avatar" aria-hidden="true">♟</div>
           <div class="player-copy"><strong>Chessboard CPU</strong><span id="cpu-label">Ready to play</span></div>
-          <span class="player-rating">Computer</span>
+          <span id="cpu-clock" class="clock" aria-label="Computer clock">--:--</span>
+          <span class="player-rating">CPU 1000</span>
         </div>
         <div id="board" class="board" role="grid" aria-label="Chess board"></div>
         <div class="player-bar">
           <div class="avatar" aria-hidden="true">♙</div>
-          <div class="player-copy"><strong>You</strong><span id="human-label">White to move</span></div>
-          <span class="player-rating">You</span>
+          <div class="player-copy"><strong id="profile-name-board">You</strong><span id="human-label">Your turn</span></div>
+          <span id="human-clock" class="clock" aria-label="Your clock">--:--</span>
+          <span id="human-rating-board" class="player-rating">800</span>
         </div>
         <div class="board-footer"><span>Play as White</span><button id="flip-button" type="button" aria-label="Flip board">↻ &nbsp;Flip board</button></div>
       </section>
 
       <aside class="side-panel" aria-label="Game controls and move history">
         <div class="panel-heading"><h2>Play vs Computer</h2><p>A friendly opponent, right in your browser.</p></div>
+        <div id="training-banner" class="training-banner"><div><strong id="training-title"></strong><br><span id="training-detail"></span></div><button id="exit-training" class="button" type="button">Exit</button></div>
         <div id="status" class="status" role="status" aria-live="polite">
           <i class="status-dot" aria-hidden="true"></i><div><strong id="status-title">Your move</strong><span id="status-detail">Choose a piece to get started.</span></div>
         </div>
@@ -340,25 +434,87 @@
           <button id="new-game" class="button primary" type="button">＋ &nbsp;New game</button>
           <button id="undo" class="button" type="button" disabled>↶ &nbsp;Undo move</button>
           <button id="hint" class="button" type="button">✦ &nbsp;Show a hint</button>
+          <button id="claim-draw" class="button" type="button" disabled>Claim draw</button>
+          <button id="review-game" class="button" type="button" disabled>♟ &nbsp;Review game</button>
           <label class="control-label" for="difficulty">Computer strength</label>
           <select id="difficulty" aria-label="Computer strength">
-            <option value="1">Beginner</option>
-            <option value="2" selected>Casual</option>
-            <option value="3">Challenging</option>
+            <option value="1">Easy</option>
+            <option value="2" selected>Medium</option>
+            <option value="3">Hard</option>
           </select>
           <span style="align-self:center;color:var(--muted);font-size:11px">Plays black</span>
+        </div>
+        <div class="clock-controls">
+          <label class="control-label" for="clock-setting">Game clock</label>
+          <select id="clock-setting" aria-label="Game clock">
+            <option value="0:0">Untimed</option>
+            <option value="60:0">1 min</option>
+            <option value="180:2">3 min + 2 sec</option>
+            <option value="300:0" selected>5 min</option>
+            <option value="600:0">10 min</option>
+          </select>
+          <span style="align-self:center;color:var(--muted);font-size:11px">Increment included</span>
         </div>
         <div class="move-area">
           <div class="move-header"><h3>Move history</h3><span id="move-count">0 moves</span></div>
           <div id="move-list" class="move-list"><div class="empty-moves">Your moves will appear here.</div></div>
         </div>
         <div class="lesson-tip"><span class="bulb" aria-hidden="true">💡</span><div><strong>Learning tip</strong><p id="tip-text">Try to control the center of the board with your pawns and pieces.</p></div></div>
+        <div class="record-grid" aria-label="Player record">
+          <div class="record-stat"><strong id="record-wins">0</strong><span>Wins</span></div>
+          <div class="record-stat"><strong id="record-draws">0</strong><span>Draws</span></div>
+          <div class="record-stat"><strong id="record-losses">0</strong><span>Losses</span></div>
+        </div>
       </aside>
     </div>
   </main>
 
   <div id="promotion-backdrop" class="promotion-backdrop" role="dialog" aria-modal="true" aria-labelledby="promotion-title">
     <div class="promotion-box"><p id="promotion-title">Choose a promotion</p><div id="promotion-options" class="promotion-options"></div></div>
+  </div>
+  <div id="profile-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+    <section class="feature-modal">
+      <div class="modal-header"><h2 id="profile-modal-title">Local player profile</h2><button class="modal-close" type="button" data-close-modal="profile-modal" aria-label="Close">×</button></div>
+      <div class="modal-content">
+        <p style="margin-top:0;color:#c1c6cd;font-size:13px">Profiles and ratings are saved only in this browser on this device. No sign-in or internet connection is used.</p>
+        <label class="control-label" for="profile-select">Current player</label>
+        <select id="profile-select" style="width:100%;margin:8px 0 14px"></select>
+        <form id="profile-form" style="display:grid;grid-template-columns:1fr auto;gap:8px">
+          <input id="profile-name-input" maxlength="20" placeholder="New player name" aria-label="New player name" required>
+          <button class="button primary" type="submit">Create player</button>
+        </form>
+        <div id="profile-summary" class="profile-summary" style="margin-top:13px"></div>
+        <div id="recent-games" class="recent-games" aria-label="Recent rated games"></div>
+      </div>
+    </section>
+  </div>
+  <div id="lessons-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="lessons-modal-title">
+    <section class="feature-modal">
+      <div class="modal-header"><h2 id="lessons-modal-title">Chess lessons</h2><button class="modal-close" type="button" data-close-modal="lessons-modal" aria-label="Close">×</button></div>
+      <div id="lesson-content" class="modal-content"></div>
+    </section>
+  </div>
+  <div id="puzzles-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="puzzles-modal-title">
+    <section class="feature-modal">
+      <div class="modal-header"><h2 id="puzzles-modal-title">Tactics puzzles</h2><button class="modal-close" type="button" data-close-modal="puzzles-modal" aria-label="Close">×</button></div>
+      <div class="modal-content puzzle-select">
+        <p>Find the forced checkmate in one. Select a puzzle, then play your move on the board.</p>
+        <label class="control-label" for="puzzle-select">Puzzle</label>
+        <select id="puzzle-select"></select>
+        <div id="puzzle-description" class="puzzle-status"></div>
+        <div class="modal-actions"><button id="start-puzzle" class="button primary" type="button">Set up puzzle</button></div>
+      </div>
+      <div id="review-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="review-modal-title">
+        <section class="feature-modal">
+          <div class="modal-header"><h2 id="review-modal-title">Game review</h2><button class="modal-close" type="button" data-close-modal="review-modal" aria-label="Close">×</button></div>
+          <div class="modal-content">
+            <div id="review-progress" class="review-progress">Choose Review game when your game is over to analyze your moves.</div>
+            <div id="review-summary" class="review-summary" hidden></div>
+            <div id="review-list" class="review-list"></div>
+          </div>
+        </section>
+      </div>
+    </section>
   </div>
 
   <script>
@@ -402,6 +558,20 @@
       const SVG_NS = "http://www.w3.org/2000/svg";
       const VALUES = { p: 100, n: 315, b: 335, r: 500, q: 900, k: 20000 };
       const FILES = "abcdefgh";
+      const STORAGE_KEY = "chessboard.localProfiles.v1";
+      const CPU_RATING = 1000;
+      const LESSONS = [
+        { title: "Control the center", text: "The four central squares (d4, e4, d5, e5) are valuable. Pieces placed near the center usually control more useful squares.", question: "Which opening move immediately fights for the center?", answers: ["1. e4", "1. a4", "1. h4"], correct: 0 },
+        { title: "Develop your pieces", text: "Bring knights and bishops into the game before moving the same piece repeatedly. Development helps you contest the center and prepare to castle.", question: "Which is a developing move?", answers: ["Move a knight toward the center", "Move the same pawn three times", "Bring the queen out and leave every minor piece home"], correct: 0 },
+        { title: "Keep your king safe", text: "Castling moves the king away from the center and brings a rook toward the middle. Usually develop your pieces and castle before launching an attack.", question: "What does castling do?", answers: ["Moves the king and a rook in one move", "Moves the queen and a bishop", "Lets a king jump over an enemy piece"], correct: 0 },
+        { title: "Look for loose pieces", text: "Before every move, check what your opponent attacks. A piece without enough protection can often be captured for free.", question: "What should you check before moving?", answers: ["Whether your opponent can capture one of your pieces", "Only how many pawns you have", "Whether the board is flipped"], correct: 0 },
+        { title: "Spot checkmate", text: "Checkmate means the king is in check and there is no legal way to escape, capture the attacker, or block the attack.", question: "What makes checkmate different from check?", answers: ["The checked king has no legal escape", "A rook has moved", "Both queens are still on the board"], correct: 0 }
+      ];
+      const PUZZLES = [
+        { title: "Queen's finish", description: "Find the queen move that checkmates in one.", fen: "7k/8/5KQ1/8/8/8/8/8 w - - 0 1", answer: "g6g7" },
+        { title: "Close the net", description: "White king and queen work together. Find mate in one.", fen: "7k/8/5K1Q/8/8/8/8/8 w - - 0 1", answer: "h6g7" },
+        { title: "Queen on the file", description: "The black king is trapped in the corner. Find mate in one.", fen: "7k/8/5K2/6Q1/8/8/8/8 w - - 0 1", answer: "g5g7" }
+      ];
       const boardElement = document.getElementById("board");
       const moveListElement = document.getElementById("move-list");
       const statusElement = document.getElementById("status");
@@ -414,15 +584,30 @@
       ];
 
       let position = initialPosition();
+      let appData = loadAppData();
+      let activeProfileId = appData.activeProfileId;
       let selected = -1;
       let legalTargets = [];
       let history = [];
+      let positionCounts = new Map();
       let flipped = false;
       let thinking = false;
       let gameOver = false;
       let hintTarget = null;
       let pendingPromotion = null;
       let gameToken = 0;
+      let trainingMode = "game";
+      let activePuzzle = -1;
+      let lessonIndex = 0;
+      let lessonAnswered = false;
+      let clockConfig = { base: 300, increment: 0 };
+      let clocks = { w: 300, b: 300 };
+      let clockStarted = false;
+      let lastClockTick = 0;
+      let gameRecorded = false;
+      let reviewToken = 0;
+      let reviewRunning = false;
+      let reviewResults = null;
 
       function initialPosition() {
         const board = Array(64).fill(null);
@@ -434,6 +619,336 @@
           board[56 + file] = { color: "w", type: back[file] };
         }
         return { board, turn: "w", castling: { K: true, Q: true, k: true, q: true }, ep: -1, halfmove: 0, fullmove: 1 };
+      }
+
+      function makeProfile(name) {
+        return {
+          id: crypto.randomUUID ? crypto.randomUUID() : "player-" + Date.now() + "-" + Math.random().toString(36).slice(2),
+          name,
+          rating: 800,
+          wins: 0,
+          draws: 0,
+          losses: 0,
+          games: [],
+          lessons: [],
+          puzzles: []
+        };
+      }
+
+      function loadAppData() {
+        const starter = makeProfile("Player");
+        const fallback = { activeProfileId: starter.id, profiles: [starter] };
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (!saved) return fallback;
+          const parsed = JSON.parse(saved);
+          if (!parsed || !Array.isArray(parsed.profiles) || parsed.profiles.length === 0) throw new Error("Saved chess profiles are malformed.");
+          const profiles = parsed.profiles.filter(profile =>
+            profile && typeof profile.id === "string" && typeof profile.name === "string" &&
+            Number.isFinite(profile.rating)
+          );
+          if (!profiles.length) throw new Error("No valid saved chess profiles were found.");
+          for (const profile of profiles) {
+            profile.wins = Number.isInteger(profile.wins) ? profile.wins : 0;
+            profile.draws = Number.isInteger(profile.draws) ? profile.draws : 0;
+            profile.losses = Number.isInteger(profile.losses) ? profile.losses : 0;
+            profile.games = Array.isArray(profile.games) ? profile.games : [];
+            profile.lessons = Array.isArray(profile.lessons) ? profile.lessons : [];
+            profile.puzzles = Array.isArray(profile.puzzles) ? profile.puzzles : [];
+          }
+          const active = profiles.some(profile => profile.id === parsed.activeProfileId) ? parsed.activeProfileId : profiles[0].id;
+          return { activeProfileId: active, profiles };
+        } catch (error) {
+          console.error("Unable to load saved local chess profiles.", error);
+          return fallback;
+        }
+      }
+
+      function saveAppData() {
+        try {
+          appData.activeProfileId = activeProfileId;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+        } catch (error) {
+          console.error("Unable to save local chess progress.", error);
+          setStatus("Progress could not be saved", "Check that browser storage is available.");
+        }
+      }
+
+      function activeProfile() {
+        return appData.profiles.find(profile => profile.id === activeProfileId) || appData.profiles[0];
+      }
+
+      function refreshProfileUi() {
+        const profile = activeProfile();
+        const selector = document.getElementById("profile-select");
+        selector.replaceChildren();
+        for (const player of appData.profiles) {
+          const option = document.createElement("option");
+          option.value = player.id;
+          option.textContent = player.name + " — " + player.rating;
+          option.selected = player.id === activeProfileId;
+          selector.append(option);
+        }
+        document.getElementById("profile-name-board").textContent = profile.name;
+        document.getElementById("human-rating-board").textContent = "Rating " + profile.rating;
+        document.getElementById("record-wins").textContent = String(profile.wins);
+        document.getElementById("record-draws").textContent = String(profile.draws);
+        document.getElementById("record-losses").textContent = String(profile.losses);
+        document.getElementById("profile-summary").textContent =
+          profile.name + " · " + profile.rating + " rating · " + (profile.wins + profile.draws + profile.losses) + " rated games · " +
+          profile.lessons.length + "/" + LESSONS.length + " lessons · " + profile.puzzles.length + "/" + PUZZLES.length + " puzzles";
+        const recentGames = document.getElementById("recent-games");
+        recentGames.replaceChildren();
+        for (const game of profile.games.slice(0, 5)) {
+          const rowElement = document.createElement("div");
+          rowElement.className = "recent-game";
+          const result = document.createElement("strong");
+          result.textContent = game.result;
+          const reason = document.createElement("span");
+          reason.textContent = game.reason + " · " + (game.ratingChange >= 0 ? "+" : "") + game.ratingChange;
+          rowElement.append(result, reason);
+          recentGames.append(rowElement);
+        }
+      }
+
+      function openModal(id) {
+        document.getElementById(id).classList.add("open");
+      }
+
+      function closeModal(id) {
+        document.getElementById(id).classList.remove("open");
+      }
+
+      function readClockConfig() {
+        const [base, increment] = document.getElementById("clock-setting").value.split(":").map(Number);
+        return { base, increment };
+      }
+
+      function formatClock(seconds) {
+        const wholeSeconds = Math.max(0, Math.ceil(seconds));
+        const minutes = Math.floor(wholeSeconds / 60);
+        const remainder = wholeSeconds % 60;
+        return minutes + ":" + String(remainder).padStart(2, "0");
+      }
+
+      function renderClocks() {
+        const activeColor = clockStarted && !gameOver ? position.turn : "";
+        for (const [color, id] of [["w", "human-clock"], ["b", "cpu-clock"]]) {
+          const element = document.getElementById(id);
+          element.textContent = clockConfig.base ? formatClock(clocks[color]) : "--:--";
+          element.classList.toggle("active", activeColor === color);
+          element.classList.toggle("low", clockConfig.base > 0 && clocks[color] <= 10);
+        }
+      }
+
+      function clockTick() {
+        if (!clockStarted || gameOver || clockConfig.base === 0) return;
+        const now = Date.now();
+        const elapsed = (now - lastClockTick) / 1000;
+        lastClockTick = now;
+        clocks[position.turn] = Math.max(0, clocks[position.turn] - elapsed);
+        if (clocks[position.turn] <= 0) {
+          clocks[position.turn] = 0;
+          gameOver = true;
+          thinking = false;
+          finishGame(position.turn === "w" ? "loss" : "win", "Time expired", position.turn === "w" ? "Your clock ran out." : "The computer ran out of time.");
+        }
+        renderClocks();
+      }
+
+      function awardRating(profile, result) {
+        const actual = result === "win" ? 1 : result === "draw" ? 0.5 : 0;
+        const expected = 1 / (1 + Math.pow(10, (CPU_RATING - profile.rating) / 400));
+        const change = Math.round(32 * (actual - expected));
+        profile.rating = Math.max(100, profile.rating + change);
+        return change;
+      }
+
+      function recordGame(result, reason) {
+        if (gameRecorded || trainingMode !== "game") return;
+        const profile = activeProfile();
+        if (result === "win") profile.wins++;
+        else if (result === "draw") profile.draws++;
+        else profile.losses++;
+        const ratingChange = awardRating(profile, result);
+        profile.games.unshift({
+          result,
+          reason,
+          ratingChange,
+          date: new Date().toISOString(),
+          moves: history.length,
+          clock: clockConfig.base
+        });
+        profile.games = profile.games.slice(0, 100);
+        gameRecorded = true;
+        saveAppData();
+        refreshProfileUi();
+      }
+
+      function finishGame(result, title, detail) {
+        if (gameOver && gameRecorded) return;
+        gameOver = true;
+        thinking = false;
+        clockStarted = false;
+        setStatus(title, detail, "over");
+        recordGame(result, title);
+        renderClocks();
+        renderBoard();
+      }
+
+      function fenToPosition(fen) {
+        const [placement, active, castling, ep, halfmove, fullmove] = fen.split(" ");
+        const board = Array(64).fill(null);
+        const rows = placement.split("/");
+        if (rows.length !== 8) throw new Error("Invalid puzzle position.");
+        rows.forEach((fenRow, r) => {
+          let c = 0;
+          for (const char of fenRow) {
+            if (/\d/.test(char)) c += Number(char);
+            else {
+              const type = char.toLowerCase();
+              if (!"pnbrqk".includes(type) || c > 7) throw new Error("Invalid piece in puzzle position.");
+              board[r * 8 + c] = { color: char === char.toUpperCase() ? "w" : "b", type };
+              c++;
+            }
+          }
+          if (c !== 8) throw new Error("Invalid puzzle row.");
+        });
+        const epSquare = ep && ep !== "-" ? (8 - Number(ep[1])) * 8 + FILES.indexOf(ep[0]) : -1;
+        return {
+          board,
+          turn: active === "b" ? "b" : "w",
+          castling: { K: castling.includes("K"), Q: castling.includes("Q"), k: castling.includes("k"), q: castling.includes("q") },
+          ep: epSquare,
+          halfmove: Number(halfmove) || 0,
+          fullmove: Number(fullmove) || 1
+        };
+      }
+
+      function showLesson() {
+        const lesson = LESSONS[lessonIndex];
+        const completed = activeProfile().lessons.includes(lessonIndex);
+        const container = document.getElementById("lesson-content");
+        container.replaceChildren();
+        const progress = document.createElement("div");
+        progress.className = "lesson-progress";
+        progress.textContent = "Lesson " + (lessonIndex + 1) + " of " + LESSONS.length + " · " + activeProfile().lessons.length + " completed";
+        const card = document.createElement("article");
+        card.className = "lesson-card";
+        const heading = document.createElement("h3");
+        heading.textContent = lesson.title;
+        const explanation = document.createElement("p");
+        explanation.textContent = lesson.text;
+        const question = document.createElement("div");
+        question.className = "lesson-question";
+        question.textContent = lesson.question;
+        const answers = document.createElement("div");
+        answers.className = "answer-list";
+        lesson.answers.forEach((answer, index) => {
+          const option = document.createElement("button");
+          option.type = "button";
+          option.className = "answer-option";
+          option.textContent = answer;
+          option.addEventListener("click", () => {
+            if (lessonAnswered) return;
+            if (index === lesson.correct) {
+              option.classList.add("correct");
+              lessonAnswered = true;
+              if (!activeProfile().lessons.includes(lessonIndex)) activeProfile().lessons.push(lessonIndex);
+              saveAppData();
+              refreshProfileUi();
+              showLessonFeedback("Correct! Lesson completed.");
+            } else {
+              option.classList.add("incorrect");
+              showLessonFeedback("Not quite. Think about which choice helps your pieces develop.");
+            }
+          });
+          answers.append(option);
+        });
+        const feedback = document.createElement("div");
+        feedback.id = "lesson-feedback";
+        feedback.className = "puzzle-status";
+        if (completed) feedback.textContent = "You have already completed this lesson.";
+        card.append(heading, explanation, question, answers, feedback);
+        const actions = document.createElement("div");
+        actions.className = "modal-actions";
+        const previous = document.createElement("button");
+        previous.type = "button";
+        previous.className = "button";
+        previous.textContent = "Previous";
+        previous.disabled = lessonIndex === 0;
+        previous.addEventListener("click", () => { lessonIndex--; lessonAnswered = false; showLesson(); });
+        const next = document.createElement("button");
+        next.type = "button";
+        next.className = "button primary";
+        next.textContent = lessonIndex === LESSONS.length - 1 ? "Done" : "Next lesson";
+        next.addEventListener("click", () => {
+          if (lessonIndex < LESSONS.length - 1) {
+            lessonIndex++;
+            lessonAnswered = activeProfile().lessons.includes(lessonIndex);
+            showLesson();
+          } else closeModal("lessons-modal");
+        });
+        actions.append(previous, next);
+        container.append(progress, card, actions);
+      }
+
+      function showLessonFeedback(message) {
+        const feedback = document.getElementById("lesson-feedback");
+        if (feedback) feedback.textContent = message;
+      }
+
+      function openLessons() {
+        lessonIndex = 0;
+        lessonAnswered = activeProfile().lessons.includes(0);
+        showLesson();
+        openModal("lessons-modal");
+      }
+
+      function openPuzzles() {
+        const selector = document.getElementById("puzzle-select");
+        selector.replaceChildren();
+        PUZZLES.forEach((puzzle, index) => {
+          const option = document.createElement("option");
+          option.value = String(index);
+          option.textContent = (index + 1) + ". " + puzzle.title + (activeProfile().puzzles.includes(index) ? " ✓" : "");
+          selector.append(option);
+        });
+        updatePuzzleDescription();
+        openModal("puzzles-modal");
+      }
+
+      function updatePuzzleDescription() {
+        const puzzle = PUZZLES[Number(document.getElementById("puzzle-select").value) || 0];
+        document.getElementById("puzzle-description").textContent = puzzle.description;
+      }
+
+      function startPuzzle() {
+        const puzzleIndex = Number(document.getElementById("puzzle-select").value);
+        if (!Number.isInteger(puzzleIndex) || !PUZZLES[puzzleIndex]) return;
+        gameToken++;
+        activePuzzle = puzzleIndex;
+        trainingMode = "puzzle";
+        position = fenToPosition(PUZZLES[puzzleIndex].fen);
+        history = [];
+        selected = -1;
+        legalTargets = [];
+        hintTarget = null;
+        gameOver = false;
+        thinking = false;
+        gameRecorded = false;
+        clockConfig = { base: 0, increment: 0 };
+        clocks = { w: 0, b: 0 };
+        clockStarted = false;
+        positionCounts = new Map([[positionKey(position), 1]]);
+        document.getElementById("training-title").textContent = "Puzzle " + (puzzleIndex + 1) + ": " + PUZZLES[puzzleIndex].title;
+        document.getElementById("training-detail").textContent = PUZZLES[puzzleIndex].description;
+        document.getElementById("training-banner").classList.add("active");
+        closeModal("puzzles-modal");
+        setStatus("Find checkmate in one", PUZZLES[puzzleIndex].description);
+        renderMoves();
+        renderBoard();
+        renderClocks();
       }
 
       function clonePosition(state) {
@@ -682,43 +1197,114 @@
         return moves;
       }
 
+      function positionKey(state) {
+        const pieces = state.board.map(piece => piece ? (piece.color === "w" ? piece.type.toUpperCase() : piece.type) : ".").join("");
+        const epAvailable = state.ep >= 0 && legalMoves(state).some(move => move.enPassant);
+        return pieces + " " + state.turn + " " +
+          ["K", "Q", "k", "q"].filter(right => state.castling[right]).join("") + " " +
+          (epAvailable ? squareName(state.ep) : "-");
+      }
+
+      function isInsufficientMaterial(state) {
+        const minors = [];
+        for (let square = 0; square < 64; square++) {
+          const piece = state.board[square];
+          if (!piece || piece.type === "k") continue;
+          if (piece.type === "p" || piece.type === "r" || piece.type === "q") return false;
+          minors.push({ type: piece.type, square });
+        }
+        if (minors.length <= 1) return true;
+        return minors.every(piece => piece.type === "b") &&
+          minors.every(piece => (row(piece.square) + col(piece.square)) % 2 === (row(minors[0].square) + col(minors[0].square)) % 2);
+      }
+
       function evaluate(state) {
         let score = 0;
+        const pawnFiles = { w: Array(8).fill(0), b: Array(8).fill(0) };
         for (let square = 0; square < 64; square++) {
           const piece = state.board[square];
           if (!piece) continue;
           const forwardRow = piece.color === "w" ? 7 - row(square) : row(square);
           const centerDistance = Math.abs(3.5 - row(square)) + Math.abs(3.5 - col(square));
           let value = VALUES[piece.type];
-          if (piece.type === "p") value += forwardRow * 8 + (3.5 - Math.abs(3.5 - col(square))) * 3;
-          if (piece.type === "n" || piece.type === "b") value += (7 - centerDistance) * 7;
-          if (piece.type === "k" && state.fullmove > 12) value -= (7 - centerDistance) * 4;
+          if (piece.type === "p") {
+            value += forwardRow * 10 + (3.5 - Math.abs(3.5 - col(square))) * 4;
+            pawnFiles[piece.color][col(square)]++;
+          }
+          if (piece.type === "n") value += (7 - centerDistance) * 11;
+          if (piece.type === "b") value += (7 - centerDistance) * 7;
+          if (piece.type === "r" && !state.board.some((item, index) => col(index) === col(square) && item && item.color === piece.color && item.type === "p")) value += 16;
+          if (piece.type === "k" && state.fullmove > 12) value -= (7 - centerDistance) * 6;
           score += piece.color === "b" ? value : -value;
+        }
+        for (const color of ["w", "b"]) {
+          for (const count of pawnFiles[color]) {
+            if (count > 1) score += (color === "w" ? -1 : 1) * (count - 1) * 13;
+          }
         }
         return state.turn === "b" ? score : -score;
       }
 
-      function orderedMoves(state, moves) {
+      function orderedMoves(state, moves, preferredMove = null) {
         return moves.sort((a, b) => {
           const score = move => {
             const target = state.board[move.to];
             const capture = target ? VALUES[target.type] - VALUES[state.board[move.from].type] / 10 : move.enPassant ? 90 : 0;
-            return capture + (move.promotion ? 800 : 0) + (move.castle ? 20 : 0);
+            const preferred = preferredMove && move.from === preferredMove.from && move.to === preferredMove.to ? 10000 : 0;
+            return preferred + capture + (move.promotion ? 800 : 0) + (move.castle ? 20 : 0);
           };
           return score(b) - score(a);
         });
       }
 
-      function search(state, depth, alpha, beta, ply = 0) {
+      function quiescence(state, alpha, beta, ply = 0) {
+        if (ply >= 6) return evaluate(state);
+        const checked = inCheck(state, state.turn);
+        const moves = legalMoves(state);
+        if (!moves.length) return checked ? -100000 + ply : 0;
+        if (state.halfmove >= 100 || isInsufficientMaterial(state)) return 0;
+        if (!checked) {
+          const standPat = evaluate(state);
+          if (standPat >= beta) return beta;
+          alpha = Math.max(alpha, standPat);
+        }
+        const forcingMoves = checked ? moves : moves.filter(move => state.board[move.to] || move.enPassant || move.promotion);
+        for (const move of orderedMoves(state, forcingMoves)) {
+          const score = -quiescence(applyMove(state, move), -beta, -alpha, ply + 1);
+          if (score >= beta) return beta;
+          alpha = Math.max(alpha, score);
+        }
+        return alpha;
+      }
+
+      function transpositionKey(state) {
+        const board = state.board.map(piece => piece ? (piece.color === "w" ? piece.type.toUpperCase() : piece.type) : ".").join("");
+        return board + state.turn + ["K", "Q", "k", "q"].filter(right => state.castling[right]).join("") + state.ep + Math.min(100, state.halfmove);
+      }
+
+      function search(state, depth, alpha, beta, ply = 0, table = new Map()) {
+        const alphaOriginal = alpha;
+        const key = transpositionKey(state);
+        const cached = table.get(key);
+        if (cached && cached.depth >= depth) {
+          if (cached.bound === "exact") return { score: cached.score, move: cached.move };
+          if (cached.bound === "lower") alpha = Math.max(alpha, cached.score);
+          else beta = Math.min(beta, cached.score);
+          if (alpha >= beta) return { score: cached.score, move: cached.move };
+        }
+        if (state.halfmove >= 100 || isInsufficientMaterial(state)) return { score: 0, move: null };
+        if (depth === 0) return { score: quiescence(state, alpha, beta, ply), move: null };
         const moves = legalMoves(state);
         if (moves.length === 0) return { score: inCheck(state, state.turn) ? -100000 + ply : 0, move: null };
-        if (state.halfmove >= 100) return { score: 0, move: null };
-        if (depth === 0) return { score: evaluate(state), move: null };
 
         let bestMove = null;
         let bestScore = -Infinity;
-        for (const move of orderedMoves(state, moves)) {
-          const result = search(applyMove(state, move), depth - 1, -beta, -alpha, ply + 1);
+        if (cached && cached.move) {
+          const preferred = moves.findIndex(move => move.from === cached.move.from && move.to === cached.move.to && move.promotion === cached.move.promotion);
+          if (preferred > 0) moves.unshift(moves.splice(preferred, 1)[0]);
+        }
+        for (const move of orderedMoves(state, moves, cached && cached.move)) {
+          const result = search(applyMove(state, move), depth - 1, -beta, -alpha, ply + 1, table);
           const score = -result.score;
           if (score > bestScore) {
             bestScore = score;
@@ -727,7 +1313,172 @@
           alpha = Math.max(alpha, score);
           if (alpha >= beta) break;
         }
+        const bound = bestScore <= alphaOriginal ? "upper" : bestScore >= beta ? "lower" : "exact";
+        table.set(key, { depth, score: bestScore, move: bestMove, bound });
         return { score: bestScore, move: bestMove };
+      }
+
+      async function findBestMove(state, maxDepth, isCancelled = () => false) {
+        const table = new Map();
+        let best = null;
+        for (let depth = 1; depth <= maxDepth; depth++) {
+          if (isCancelled()) break;
+          const result = search(state, depth, -Infinity, Infinity, 0, table);
+          if (result.move) best = result;
+          if (depth < maxDepth) await new Promise(resolve => window.setTimeout(resolve, 0));
+        }
+        return best || (isCancelled() ? null : search(state, 1, -Infinity, Infinity));
+      }
+
+      function materialBalance(state, color) {
+        return state.board.reduce((total, piece) => total + (piece && piece.color === color ? VALUES[piece.type] : 0), 0);
+      }
+
+      function classifyReviewMove(loss) {
+        if (loss <= 25) return { key: "excellent", label: "Excellent" };
+        if (loss <= 75) return { key: "good", label: "Good" };
+        if (loss <= 150) return { key: "inaccuracy", label: "Inaccuracy" };
+        if (loss <= 300) return { key: "mistake", label: "Mistake" };
+        return { key: "blunder", label: "Blunder" };
+      }
+
+      function explainReviewMove(entry, loss, bestMove) {
+        const played = entry.move;
+        const before = entry.before;
+        const after = applyMove(before, played);
+        const captured = played.enPassant
+          ? before.board[played.to + 8]
+          : before.board[played.to];
+        if (loss <= 75) {
+          if (played.castle) return "You moved your king to safety and brought a rook into play.";
+          if (captured) return "You won a " + PIECE_NAMES[captured.type] + " while keeping your position sound.";
+          if (played.promotion) return "You promoted your pawn and increased your attacking power.";
+          if (inCheck(after, "b")) return "You made a forcing check and kept the pressure on the opposing king.";
+          return "This move keeps the position close to the engine's top choice.";
+        }
+
+        const bestCapture = before.board[bestMove.to] || (bestMove.enPassant ? before.board[bestMove.to + 8] : null);
+        if (bestCapture && !captured) {
+          return "The engine preferred " + notation(bestMove, before) + ", which wins a " + PIECE_NAMES[bestCapture.type] + ".";
+        }
+        const materialLost = materialBalance(before, "w") - materialBalance(after, "w");
+        if (materialLost > 0) {
+          return "This move gave up material worth about " + Math.round(materialLost / 100) + " pawn" + (materialLost >= 200 ? "s" : "") + ". Look for a safer square or a useful recapture.";
+        }
+
+        const blackReplies = legalMoves(after);
+        const winningCapture = blackReplies
+          .map(reply => ({ reply, victim: after.board[reply.to] || (reply.enPassant ? after.board[reply.to + 8] : null) }))
+          .filter(item => item.victim && item.victim.type !== "k" && VALUES[item.victim.type] >= VALUES[after.board[item.reply.from].type] + 100)
+          .sort((a, b) => VALUES[b.victim.type] - VALUES[a.victim.type])[0];
+        if (winningCapture) {
+          return "This leaves your " + PIECE_NAMES[winningCapture.victim.type] + " vulnerable to " + notation(winningCapture.reply, after) + ". Check what your opponent can capture before committing.";
+        }
+        if (loss > 300) return "The engine sees a much stronger continuation: " + notation(bestMove, before) + ". Recheck checks, captures, and threats before choosing a move.";
+        return "A stronger continuation was " + notation(bestMove, before) + ". Compare the threats that move creates with the move you played.";
+      }
+
+      function renderReview() {
+        const progress = document.getElementById("review-progress");
+        const summary = document.getElementById("review-summary");
+        const list = document.getElementById("review-list");
+        list.replaceChildren();
+        if (reviewRunning) {
+          progress.textContent = "Analyzing moves… " + (reviewResults ? reviewResults.length : 0) + " of " +
+            history.filter(entry => entry.before.turn === "w").length + " moves checked.";
+          summary.hidden = true;
+          return;
+        }
+        if (!reviewResults) {
+          progress.textContent = "Your game stays on this device. Choose Review game after a CPU game to analyze your moves.";
+          summary.hidden = true;
+          return;
+        }
+        progress.textContent = "Reviewed " + reviewResults.length + " of your moves with the local computer engine.";
+        summary.hidden = false;
+        const counts = reviewResults.reduce((all, item) => {
+          all[item.grade.key] = (all[item.grade.key] || 0) + 1;
+          return all;
+        }, {});
+        const positives = (counts.excellent || 0) + (counts.good || 0);
+        const negatives = (counts.inaccuracy || 0) + (counts.mistake || 0) + (counts.blunder || 0);
+        summary.textContent = positives + " strong move" + (positives === 1 ? "" : "s") + " · " +
+          negatives + " move" + (negatives === 1 ? "" : "s") + " to revisit. Review the notes below for useful alternatives and tactical ideas.";
+
+        if (!reviewResults.length) {
+          const empty = document.createElement("div");
+          empty.className = "empty-moves";
+          empty.textContent = "There were no completed player moves to analyze.";
+          list.append(empty);
+        }
+        for (const item of reviewResults) {
+          const card = document.createElement("article");
+          card.className = "review-move " + item.grade.key;
+          const heading = document.createElement("div");
+          heading.className = "review-move-head";
+          const moveName = document.createElement("strong");
+          moveName.textContent = item.moveNumber + ". " + item.played;
+          const grade = document.createElement("span");
+          grade.className = "review-grade";
+          grade.textContent = item.grade.label + (item.loss > 75 ? " · " + Math.round(item.loss) + " cp" : "");
+          heading.append(moveName, grade);
+          const explanation = document.createElement("p");
+          explanation.textContent = item.explanation;
+          const best = document.createElement("p");
+          best.className = "review-best";
+          best.textContent = item.grade.key === "excellent" || item.grade.key === "good"
+            ? "Engine choice: " + item.best
+            : "Try: " + item.best;
+          card.append(heading, explanation, best);
+          list.append(card);
+        }
+      }
+
+      async function analyzeGame() {
+        if (!gameOver || trainingMode !== "game") return;
+        openModal("review-modal");
+        if (reviewRunning) {
+          renderReview();
+          return;
+        }
+        reviewToken++;
+        const token = reviewToken;
+        const humanMoves = history
+          .map((entry, index) => ({ entry, index }))
+          .filter(item => item.entry.before.turn === "w");
+        reviewResults = [];
+        reviewRunning = true;
+        renderReview();
+        const maxDepth = Number(document.getElementById("difficulty").value) <= 1 ? 2 : 3;
+
+        for (let index = 0; index < humanMoves.length; index++) {
+          if (token !== reviewToken) return;
+          const { entry, index: historyIndex } = humanMoves[index];
+          const before = entry.before;
+          const actualAfter = applyMove(before, entry.move);
+          const bestResult = await findBestMove(before, maxDepth, () => token !== reviewToken);
+          if (token !== reviewToken) return;
+          const actualResponse = await findBestMove(actualAfter, maxDepth, () => token !== reviewToken);
+          if (token !== reviewToken) return;
+          if (!bestResult || !bestResult.move || !actualResponse) continue;
+          const bestScoreForWhite = bestResult.score;
+          const playedScoreForWhite = -actualResponse.score;
+          const loss = Math.max(0, bestScoreForWhite - playedScoreForWhite);
+          const grade = classifyReviewMove(loss);
+          reviewResults.push({
+            moveNumber: Math.floor(historyIndex / 2) + 1,
+            played: entry.notation,
+            best: notation(bestResult.move, before),
+            loss,
+            grade,
+            explanation: explainReviewMove(entry, loss, bestResult.move)
+          });
+          renderReview();
+          await new Promise(resolve => window.setTimeout(resolve, 0));
+        }
+        if (token !== reviewToken) return;
+        reviewRunning = false;
+        renderReview();
       }
 
       function notation(move, before) {
@@ -783,11 +1534,17 @@
       }
 
       function updateControls() {
-        document.getElementById("undo").disabled = thinking || history.length === 0;
+        document.getElementById("undo").disabled = thinking || gameOver || history.length === 0 || trainingMode !== "game";
         document.getElementById("hint").disabled = thinking || gameOver || position.turn !== "w";
+        const currentCount = positionCounts.get(positionKey(position)) || 0;
+        document.getElementById("claim-draw").disabled = thinking || gameOver || trainingMode !== "game" || (currentCount < 3 && position.halfmove < 100);
+        document.getElementById("review-game").disabled = !gameOver || trainingMode !== "game" || history.every(entry => entry.before.turn !== "w");
+        document.getElementById("review-game").textContent = reviewRunning ? "Review in progress…" : reviewResults ? "View game review" : "♟  Review game";
+        document.getElementById("clock-setting").disabled = clockStarted && !gameOver;
         document.getElementById("cpu-label").textContent = thinking ? "Thinking…" : gameOver ? "Game complete" : position.turn === "b" ? "To move" : "Waiting";
         document.getElementById("human-label").textContent = gameOver ? "Game complete" : position.turn === "w" ? "Your turn" : "Thinking…";
         document.getElementById("move-count").textContent = history.length + (history.length === 1 ? " move" : " moves");
+        renderClocks();
       }
 
       function renderMoves() {
@@ -826,15 +1583,18 @@
         hintTarget = null;
         const moves = legalMoves(position);
         if (!moves.length) {
-          gameOver = true;
           if (inCheck(position, position.turn)) {
-            setStatus(position.turn === "w" ? "Checkmate — CPU wins" : "Checkmate — you win!", "Great game. Start a new one to play again.", "over");
+            const humanWon = position.turn === "b";
+            finishGame(humanWon ? "win" : "loss", humanWon ? "Checkmate — you win!" : "Checkmate — CPU wins", "Great game. Start a new one to play again.");
           } else {
-            setStatus("Draw by stalemate", "Neither king is in check, but no legal moves remain.", "over");
+            finishGame("draw", "Draw by stalemate", "Neither king is in check, but no legal moves remain.");
           }
-        } else if (position.halfmove >= 100) {
-          gameOver = true;
-          setStatus("Draw by 50-move rule", "No pawn move or capture has happened for 50 moves.", "over");
+        } else if (isInsufficientMaterial(position)) {
+          finishGame("draw", "Draw by insufficient material", "Neither side has enough material to force checkmate.");
+        } else if ((positionCounts.get(positionKey(position)) || 0) >= 5) {
+          finishGame("draw", "Draw by fivefold repetition", "The same position occurred five times.");
+        } else if (position.halfmove >= 150) {
+          finishGame("draw", "Draw by 75-move rule", "No pawn move or capture has happened for 75 moves.");
         } else if (position.turn === "w") {
           setStatus(inCheck(position, "w") ? "Check!" : "Your move", inCheck(position, "w") ? "Your king is under attack. Find a safe move." : "Choose a piece to get started.");
         } else {
@@ -846,11 +1606,56 @@
       }
 
       function playMove(move) {
+        if (trainingMode === "puzzle") {
+          const attempted = squareName(move.from) + squareName(move.to);
+          const expected = PUZZLES[activePuzzle].answer;
+          const candidate = attempted === expected ? applyMove(position, move) : null;
+          if (attempted !== expected || !candidate || !inCheck(candidate, candidate.turn) || legalMoves(candidate).length !== 0) {
+            selected = -1;
+            legalTargets = [];
+            renderBoard();
+            if (attempted !== expected) {
+              setStatus("Not quite", "That move is legal, but it does not finish the puzzle. Try again.");
+            } else {
+              console.error("Puzzle answer does not produce checkmate.", PUZZLES[activePuzzle]);
+              setStatus("Puzzle setup error", "This puzzle's stored answer is not checkmate. Choose another puzzle.");
+            }
+            return;
+          }
+          const before = clonePosition(position);
+          history.push({ move, before, notation: notation(move, before) });
+          position = applyMove(position, move);
+          gameOver = true;
+          const profile = activeProfile();
+          if (!profile.puzzles.includes(activePuzzle)) profile.puzzles.push(activePuzzle);
+          saveAppData();
+          refreshProfileUi();
+          setStatus("Puzzle solved!", "Excellent — you found checkmate in one.");
+          selected = -1;
+          legalTargets = [];
+          renderMoves();
+          renderBoard();
+          return;
+        }
+        if (clockStarted) {
+          clockTick();
+          if (gameOver) return;
+        } else if (clockConfig.base > 0) {
+          clockStarted = true;
+          lastClockTick = Date.now();
+        }
+        const mover = position.turn;
+        const clockBefore = { ...clocks };
         const before = clonePosition(position);
         const moveText = notation(move, before);
         position = applyMove(position, move);
-        history.push({ move, before, notation: moveText });
+        if (clockConfig.base > 0) clocks[mover] += clockConfig.increment;
+        history.push({ move, before, notation: moveText, clockBefore });
+        const key = positionKey(position);
+        positionCounts.set(key, (positionCounts.get(key) || 0) + 1);
+        lastClockTick = Date.now();
         finishTurn();
+        renderClocks();
       }
 
       function selectSquare(square) {
@@ -902,11 +1707,11 @@
         thinking = true;
         const token = gameToken;
         renderBoard();
-        window.setTimeout(() => {
+        window.setTimeout(async () => {
           if (token !== gameToken || gameOver) return;
-          const depth = Number(document.getElementById("difficulty").value);
-          const result = search(position, depth, -Infinity, Infinity);
-          if (token !== gameToken || !result.move) return;
+          const depth = Number(document.getElementById("difficulty").value) + 1;
+          const result = await findBestMove(position, depth, () => token !== gameToken || gameOver);
+          if (token !== gameToken || !result || !result.move) return;
           thinking = false;
           playMove(result.move);
         }, 40);
@@ -914,13 +1719,26 @@
 
       function resetGame() {
         gameToken++;
+        reviewToken++;
+        reviewRunning = false;
+        reviewResults = null;
         position = initialPosition();
         selected = -1;
         legalTargets = [];
         history = [];
         thinking = false;
         gameOver = false;
+        gameRecorded = false;
+        trainingMode = "game";
+        activePuzzle = -1;
         hintTarget = null;
+        clockConfig = readClockConfig();
+        clocks = { w: clockConfig.base, b: clockConfig.base };
+        clockStarted = false;
+        lastClockTick = Date.now();
+        positionCounts = new Map([[positionKey(position), 1]]);
+        document.getElementById("training-banner").classList.remove("active");
+        document.getElementById("clock-setting").disabled = false;
         document.getElementById("promotion-backdrop").classList.remove("open");
         setStatus("Your move", "Choose a piece to get started.");
         document.getElementById("tip-text").textContent = tips[Math.floor(Math.random() * tips.length)];
@@ -929,16 +1747,25 @@
       }
 
       function undoMove() {
-        if (thinking || !history.length) return;
+        if (thinking || gameOver || trainingMode !== "game" || !history.length) return;
         gameToken++;
         const removeCount = history.length > 1 ? 2 : 1;
-        for (let i = 0; i < removeCount; i++) {
-          const previous = history.pop();
-          position = previous.before;
-        }
-        gameOver = false;
+        const removed = history.splice(-removeCount);
+        position = removed[0].before;
+        clocks = { ...removed[0].clockBefore };
+        clockStarted = history.length > 0;
+        lastClockTick = Date.now();
         selected = -1;
         legalTargets = [];
+        positionCounts = new Map([[positionKey(history.length ? history[0].before : position), 1]]);
+        let replay = history.length ? history[0].before : position;
+        for (const entry of history) {
+          replay = applyMove(replay, entry.move);
+          const key = positionKey(replay);
+          positionCounts.set(key, (positionCounts.get(key) || 0) + 1);
+        }
+        if (!clockStarted) clocks = { w: clockConfig.base, b: clockConfig.base };
+        reviewResults = null;
         setStatus("Your move", "Try a different idea this time.");
         renderMoves();
         renderBoard();
@@ -952,8 +1779,9 @@
         setStatus("Finding a suggestion…", "Looking for a useful move.", "thinking");
         await new Promise(resolve => window.setTimeout(resolve, 30));
         if (token !== gameToken) return;
-        const result = search(position, 2, -Infinity, Infinity);
-        if (result.move) {
+        const result = await findBestMove(position, 2, () => token !== gameToken);
+        if (token !== gameToken) return;
+        if (result && result.move) {
           hintTarget = result.move;
           selected = result.move.from;
           legalTargets = legalMoves(position, selected);
@@ -996,10 +1824,67 @@
       document.getElementById("new-game").addEventListener("click", resetGame);
       document.getElementById("undo").addEventListener("click", undoMove);
       document.getElementById("hint").addEventListener("click", showHint);
+      document.getElementById("review-game").addEventListener("click", analyzeGame);
+      document.getElementById("claim-draw").addEventListener("click", () => {
+        const count = positionCounts.get(positionKey(position)) || 0;
+        if (count >= 3) finishGame("draw", "Draw claimed by repetition", "The same position occurred three times.");
+        else if (position.halfmove >= 100) finishGame("draw", "Draw claimed by 50-move rule", "No pawn move or capture has happened for 50 moves.");
+      });
       document.getElementById("flip-button").addEventListener("click", () => { flipped = !flipped; renderBoard(); });
+      document.getElementById("clock-setting").addEventListener("change", resetGame);
+      document.getElementById("open-profile").addEventListener("click", () => { refreshProfileUi(); openModal("profile-modal"); });
+      document.getElementById("open-lessons").addEventListener("click", openLessons);
+      document.getElementById("open-puzzles").addEventListener("click", openPuzzles);
+      document.getElementById("puzzle-select").addEventListener("change", updatePuzzleDescription);
+      document.getElementById("start-puzzle").addEventListener("click", startPuzzle);
+      document.getElementById("exit-training").addEventListener("click", resetGame);
+      document.getElementById("profile-select").addEventListener("change", event => {
+        activeProfileId = event.target.value;
+        saveAppData();
+        refreshProfileUi();
+        resetGame();
+      });
+      document.getElementById("profile-form").addEventListener("submit", event => {
+        event.preventDefault();
+        const name = document.getElementById("profile-name-input").value.trim();
+        if (!name) return;
+        const profile = makeProfile(name);
+        appData.profiles.push(profile);
+        activeProfileId = profile.id;
+        document.getElementById("profile-name-input").value = "";
+        saveAppData();
+        refreshProfileUi();
+        resetGame();
+      });
+      document.querySelectorAll("[data-close-modal]").forEach(button => {
+        button.addEventListener("click", () => {
+          if (button.dataset.closeModal === "review-modal" && reviewRunning) {
+            reviewToken++;
+            reviewRunning = false;
+          }
+          closeModal(button.dataset.closeModal);
+        });
+      });
+      document.querySelectorAll(".modal-backdrop").forEach(backdrop => {
+        backdrop.addEventListener("click", event => {
+          if (event.target === backdrop) {
+            if (backdrop.id === "review-modal" && reviewRunning) {
+              reviewToken++;
+              reviewRunning = false;
+            }
+            backdrop.classList.remove("open");
+          }
+        });
+      });
+      window.setInterval(clockTick, 100);
 
+      refreshProfileUi();
+      positionCounts = new Map([[positionKey(position), 1]]);
+      clockConfig = readClockConfig();
+      clocks = { w: clockConfig.base, b: clockConfig.base };
       renderBoard();
       renderMoves();
+      renderClocks();
     })();
   </script>
 </body>
